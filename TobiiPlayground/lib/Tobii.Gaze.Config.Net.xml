@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tobii.Gaze.Config.Net</name>
+    </assembly>
+    <members>
+        <member name="T:Tobii.Gaze.Config.ConfigurationProvider">
+            <summary>
+            The Configuration Provider 
+            </summary>
+        </member>
+        <member name="M:Tobii.Gaze.Config.IConfigurationProvider.GetCurrentUserProfile">
+            <summary>
+            Gets the name of the current user profile.
+            </summary>
+            <returns>The name of the current user profile</returns>
+        </member>
+        <member name="M:Tobii.Gaze.Config.IConfigurationProvider.GetDefaultEyeTrackerUrl">
+            <summary>
+            Gets the url for the default system eye tracker.
+            </summary>
+            <returns>The default system eye tracker url</returns>
+        </member>
+        <member name="M:Tobii.Gaze.Config.IConfigurationProvider.GetScreenBoundsPixels(System.Uri)">
+            <summary>
+            Gets the bounds of the screen on which an eye tracker is mounted, in pixels, measured from the top left corner of the primary screen.
+            (In a multi-monitor setup, all the monitors are combined into a single virtual screen.)
+            </summary>
+            <param name="url">A url identifying the eye tracker</param>
+            <returns>The screen bounds in pixels</returns>
+        </member>
+        <member name="M:Tobii.Gaze.Config.IConfigurationProvider.GetDisplayArea(System.Uri)">
+            <summary>
+            Gets the display area in millimeters.
+            </summary>
+            <param name="url">A url identifying the eye tracker</param>
+            <returns>The display area.</returns>
+        </member>
+        <member name="M:Tobii.Gaze.Config.IConfigurationProvider.GetTrackedEye(System.String)">
+            <summary>
+            Gets the eye(s) to be tracked according to the current user profile.
+            </summary>
+            <param name="userProfile">The user profile name</param>
+            <returns>The eye(s) to be tracked.</returns>
+        </member>
+        <member name="M:Tobii.Gaze.Config.IConfigurationProvider.PrepareEyeTracker(System.Uri,System.String,Tobii.Gaze.Core.IEyeTracker)">
+            <summary>
+            Prepares the eye tracker according to the system eye tracking configuration synchronously.
+            </summary>
+            <param name="url">A url identifying the eye tracker</param>
+            <param name="userProfile">The user profile name</param>
+            <param name="eyeTracker">The eye tracker to prepare</param>
+        </member>
+        <member name="M:Tobii.Gaze.Config.IConfigurationProvider.PrepareEyeTrackerAsync(System.Uri,System.String,Tobii.Gaze.Core.IEyeTracker,Tobii.Gaze.Core.CompletionStatusCallback)">
+            <summary>
+            Prepares the eye tracker according to the system eye tracking configuration asynchronously.
+            </summary>
+            <param name="url">A url identifying the eye tracker</param>
+            <param name="userProfile">The user profile name</param>
+            <param name="eyeTracker">The eye tracker to prepare</param>
+            <param name="completionStatusCallback">A callback function that will be called on command completion.</param>
+        </member>
+        <member name="M:Tobii.Gaze.Config.IConfigurationProvider.Validate">
+            <summary>
+            Validates the system eye tracking configuration.
+            </summary>
+            <returns>The result of validation</returns>
+        </member>
+        <member name="M:Tobii.Gaze.Config.IConfigurationProvider.LaunchControlPanel">
+            <summary>
+            Launches the control panel for eye tracking in a separate process.
+            </summary>
+        </member>
+        <member name="M:Tobii.Gaze.Config.ConfigurationProvider.#ctor(Tobii.Gaze.Config.IEyeTrackerConfigLibrary)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tobii.Gaze.Config.ConfigurationProvider"/> class.
+            </summary>
+            <param name="eyeTrackerConfigLibrary">The eye tracker config library. It is up to the caller to dispose the library. 
+            The disposal should be done after the configuration provider has served its purpose.</param>
+        </member>
+        <member name="M:Tobii.Gaze.Config.ConfigurationProvider.Validate">
+            <summary>See <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.Validate"/>.</summary>
+            <returns>Return value documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.Validate"/></returns>
+        </member>
+        <member name="M:Tobii.Gaze.Config.ConfigurationProvider.GetDefaultEyeTrackerUrl">
+            <summary>See <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.GetDefaultEyeTrackerUrl"/>.</summary>
+            <returns>Return value documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.GetDefaultEyeTrackerUrl"/></returns>
+        </member>
+        <member name="M:Tobii.Gaze.Config.ConfigurationProvider.GetCurrentUserProfile">
+            <summary>See <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.GetCurrentUserProfile"/>.</summary>
+            <returns>Return value documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.GetCurrentUserProfile"/></returns>
+        </member>
+        <member name="M:Tobii.Gaze.Config.ConfigurationProvider.PrepareEyeTrackerAsync(System.Uri,System.String,Tobii.Gaze.Core.IEyeTracker,Tobii.Gaze.Core.CompletionStatusCallback)">
+            <summary>See <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.PrepareEyeTrackerAsync(System.Uri,System.String,Tobii.Gaze.Core.IEyeTracker,Tobii.Gaze.Core.CompletionStatusCallback)"/>.</summary>
+            <param name="url">Parameter url documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.PrepareEyeTrackerAsync(System.Uri,System.String,Tobii.Gaze.Core.IEyeTracker,Tobii.Gaze.Core.CompletionStatusCallback)"/>.</param>
+            <param name="userProfile">Parameter userProfile documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.PrepareEyeTrackerAsync(System.Uri,System.String,Tobii.Gaze.Core.IEyeTracker,Tobii.Gaze.Core.CompletionStatusCallback)"/>.</param>
+            <param name="eyeTracker">Parameter eyeTracker documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.PrepareEyeTrackerAsync(System.Uri,System.String,Tobii.Gaze.Core.IEyeTracker,Tobii.Gaze.Core.CompletionStatusCallback)"/>.</param>
+            <param name="completionStatusCallback">Parameter completionStatusCallback documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.PrepareEyeTrackerAsync(System.Uri,System.String,Tobii.Gaze.Core.IEyeTracker,Tobii.Gaze.Core.CompletionStatusCallback)"/>.</param>
+        </member>
+        <member name="M:Tobii.Gaze.Config.ConfigurationProvider.PrepareEyeTracker(System.Uri,System.String,Tobii.Gaze.Core.IEyeTracker)">
+            <summary>See <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.PrepareEyeTracker(System.Uri,System.String,Tobii.Gaze.Core.IEyeTracker)"/>.</summary>
+            <param name="url">Parameter url documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.PrepareEyeTracker(System.Uri,System.String,Tobii.Gaze.Core.IEyeTracker)"/>.</param>
+            <param name="userProfile">Parameter userProfile documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.PrepareEyeTracker(System.Uri,System.String,Tobii.Gaze.Core.IEyeTracker)"/>.</param>
+            <param name="eyeTracker">Parameter eyeTracker documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.PrepareEyeTracker(System.Uri,System.String,Tobii.Gaze.Core.IEyeTracker)"/>.</param>
+        </member>
+        <member name="M:Tobii.Gaze.Config.ConfigurationProvider.GetScreenBoundsPixels(System.Uri)">
+            <summary>See <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.GetScreenBoundsPixels(System.Uri)"/>. </summary>
+            <param name="url">Parameter url documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.GetScreenBoundsPixels(System.Uri)"/>.</param>
+            <returns>Return value documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.GetScreenBoundsPixels(System.Uri)"/>.</returns>
+        </member>
+        <member name="M:Tobii.Gaze.Config.ConfigurationProvider.GetDisplayArea(System.Uri)">
+            <summary>See <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.GetDisplayArea(System.Uri)"/>. </summary>
+            <param name="url">Parameter url documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.GetDisplayArea(System.Uri)"/>.</param>
+            <returns>Return value documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.GetDisplayArea(System.Uri)"/>.</returns>
+        </member>
+        <member name="M:Tobii.Gaze.Config.ConfigurationProvider.GetTrackedEye(System.String)">
+            <summary>See <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.GetTrackedEye(System.String)"/>. </summary>
+            <param name="userProfile">Parameter userProfile documented in  <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.GetTrackedEye(System.String)"/>. </param>
+            <returns>Return value documented in <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.GetTrackedEye(System.String)"/>. </returns>
+        </member>
+        <member name="M:Tobii.Gaze.Config.ConfigurationProvider.LaunchControlPanel">
+            <summary> See <see cref="M:Tobii.Gaze.Config.IConfigurationProvider.LaunchControlPanel"/>.</summary>
+        </member>
+        <member name="T:Tobii.Gaze.Config.IEyeTrackerConfigLibrary">
+            <summary>
+            Marker interface for EyeTrackerConfigLibrary.
+            </summary>
+        </member>
+        <member name="T:Tobii.Gaze.Config.EyeTrackerConfigLibrary">
+            <summary>
+            Wrapper for the Eye Tracker config library.
+            </summary>
+        </member>
+        <member name="M:Tobii.Gaze.Config.EyeTrackerConfigLibrary.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Tobii.Gaze.Config.EyeTrackerConfigLibrary"/> class.
+            </summary>
+        </member>
+        <member name="M:Tobii.Gaze.Config.EyeTrackerConfigLibrary.LibraryVersion">
+            <summary>
+            Gets the version of the native DLL.
+            </summary>
+            <returns>
+            The version number of the native DLL.
+            </returns>
+        </member>
+        <member name="M:Tobii.Gaze.Config.EyeTrackerConfigLibrary.DoSetLogging(System.String,Tobii.Gaze.Core.LogLevel)">
+            <summary>
+            Sets the logging in the native library.
+            </summary>
+            <param name="fileName">Name of the file.</param>
+            <param name="logLevel">The log level.</param>
+            <returns>
+            The error code from the native library.
+            </returns>
+        </member>
+        <member name="M:Tobii.Gaze.Config.EyeTrackerConfigLibrary.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:Tobii.Gaze.Config.EyeTrackerConfigLibrary.InitializeLibrary">
+            <summary>
+            Initializes the library.
+            </summary>
+        </member>
+        <member name="T:Tobii.Gaze.Config.Internal.NativeMethods">
+            <summary>
+            Native methods for Tobii Gaze Config dll
+            </summary>
+        </member>
+        <member name="T:Tobii.Gaze.Config.TrackedEyes">
+            <summary>
+            Describes the possible combinations of eyes to be tracked.
+            </summary>
+        </member>
+        <member name="F:Tobii.Gaze.Config.TrackedEyes.BothEyes">
+            <summary>
+            Both eyes.
+            </summary>
+        </member>
+        <member name="F:Tobii.Gaze.Config.TrackedEyes.LeftEyeOnly">
+            <summary>
+            Left eye only.
+            </summary>
+        </member>
+        <member name="F:Tobii.Gaze.Config.TrackedEyes.RightEyeOnly">
+            <summary>
+            Right eye only.
+            </summary>
+        </member>
+    </members>
+</doc>
