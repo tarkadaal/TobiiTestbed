@@ -56,10 +56,9 @@
         private Rect? _screenBounds;
         private TrackedEyes _trackedEyes;
         private Thread _thread;
-        private FileStream _file;
-        private StreamWriter _writer;
         private long? _startTime;
-        private Object _fileLock = new object();
+        private EyeTrackingLogger _logger;
+
 
         /// <summary>
         /// Create eye tracking engine 
@@ -69,9 +68,8 @@
         {
             _eyeTrackerConfigLibrary = new EyeTrackerConfigLibrary();
             _configurationProvider = new ConfigurationProvider(_eyeTrackerConfigLibrary);
-            _file = File.Open("output.log", FileMode.Create);
-            _writer = new StreamWriter(_file);
-            LogHeaders();
+            _logger = new EyeTrackingLogger();
+            _logger.LogHeaders();
         }
 
         public EyeTrackingState State
@@ -160,17 +158,6 @@
             if (_eyeTrackerConfigLibrary != null)
             {
                 _eyeTrackerConfigLibrary.Dispose();
-            }
-
-            if (_writer != null)
-            {
-                _writer.Close();
-                _writer = null;
-            }
-
-            if (_file != null)
-            {
-                _file = null;
             }
         }
 
@@ -493,8 +480,8 @@
             {
                 _startTime = gazeData.Timestamp;
             }
-            //LogGazeData(gazeData);
-            LogGazeDataAsCsv(gazeData);
+
+            _logger.LogGazeDataAsCsv(gazeData, NormalizeTimestamp(gazeData));
 
             switch (_trackedEyes)
             {
@@ -547,112 +534,14 @@
             }
         }
 
-        private void LogGazeDataAsCsv(GazeData gazeData)
+        private long NormalizeTimestamp(GazeData gazeData)
         {
-            lock (_fileLock)
+            if (!_startTime.HasValue)
             {
-                var s = String.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24}",
-                    gazeData.Timestamp.ToString(),
-                    (gazeData.Timestamp-_startTime).ToString(),
-                    gazeData.TrackingStatus.ToString(),
-                    gazeData.Left.EyePositionFromEyeTrackerMM.X.ToString(),
-                    gazeData.Left.EyePositionFromEyeTrackerMM.Y.ToString(),
-                    gazeData.Left.EyePositionFromEyeTrackerMM.Z.ToString(),
-                    gazeData.Left.EyePositionInTrackBoxNormalized.X.ToString(),
-                    gazeData.Left.EyePositionInTrackBoxNormalized.Y.ToString(),
-                    gazeData.Left.EyePositionInTrackBoxNormalized.Z.ToString(),
-                    gazeData.Left.GazePointFromEyeTrackerMM.X.ToString(),
-                    gazeData.Left.GazePointFromEyeTrackerMM.Y.ToString(),
-                    gazeData.Left.GazePointFromEyeTrackerMM.Z.ToString(),
-                    gazeData.Left.GazePointOnDisplayNormalized.X.ToString(),
-                    gazeData.Left.GazePointOnDisplayNormalized.Y.ToString(),
-                    gazeData.Right.EyePositionFromEyeTrackerMM.X.ToString(),
-                    gazeData.Right.EyePositionFromEyeTrackerMM.Y.ToString(),
-                    gazeData.Right.EyePositionFromEyeTrackerMM.Z.ToString(),
-                    gazeData.Right.EyePositionInTrackBoxNormalized.X.ToString(),
-                    gazeData.Right.EyePositionInTrackBoxNormalized.Y.ToString(),
-                    gazeData.Right.EyePositionInTrackBoxNormalized.Z.ToString(),
-                    gazeData.Right.GazePointFromEyeTrackerMM.X.ToString(),
-                    gazeData.Right.GazePointFromEyeTrackerMM.Y.ToString(),
-                    gazeData.Right.GazePointFromEyeTrackerMM.Z.ToString(),
-                    gazeData.Right.GazePointOnDisplayNormalized.X.ToString(),
-                    gazeData.Right.GazePointOnDisplayNormalized.Y.ToString());
-                _writer.WriteLine(s);
+                throw new InvalidOperationException("_startTime is expected to have been initialized at this point.");
             }
-        }
 
-        private void LogGazeData(GazeData gazeData)
-        {
-            lock (_fileLock)
-            {
-                // Timestamp is given in UNIX Epoch
-                // Eyetracker defaults to 2007
-                LogLine("Timestamp", UnixTimeStampToDateTime(gazeData.Timestamp).ToString("O"));
-                LogLine("Tracking Status", gazeData.TrackingStatus.ToString());
-                LogEye("Left", gazeData.Left);
-                LogEye("Right", gazeData.Right);
-                _writer.WriteLine("-----------");
-            }
-        }
-
-        private void LogEye(string eyeName, GazeDataEye eye)
-        {
-            LogLine(MakeEyeLabel(eyeName, "EyePositionFromEyeTrackerMM"), eye.EyePositionFromEyeTrackerMM.ToString());
-            LogLine(MakeEyeLabel(eyeName, "EyePostitionInTrackBoxNormalized"),eye.EyePositionInTrackBoxNormalized.ToString());
-            LogLine(MakeEyeLabel(eyeName, "GazePointFromEyeTrackerMM"), eye.GazePointFromEyeTrackerMM.ToString());
-            LogLine(MakeEyeLabel(eyeName, "GazePointOnDisplayNormalized"), eye.GazePointOnDisplayNormalized.ToString());
-        }
-
-        private void LogHeaders()
-        {
-            lock (_fileLock)
-            { 
-                var s = String.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24}",
-                    "Timestamp",
-                    "TimestampOffset",
-                    "Tracking Status",
-                    "LeftEyePositionFromEyeTrackerMMX",
-                    "LeftEyePositionFromEyeTrackerMMY",
-                    "LeftEyePositionFromEyeTrackerMMZ", 
-                    "LeftEyePostitionInTrackBoxNormalizedX",
-                    "LeftEyePostitionInTrackBoxNormalizedY",
-                    "LeftEyePostitionInTrackBoxNormalizedZ",
-                    "LeftGazePointFromEyeTrackerMMX",
-                    "LeftGazePointFromEyeTrackerMMY",
-                    "LeftGazePointFromEyeTrackerMMZ",
-                    "LeftGazePointOnDisplayNormalizedX",
-                    "LeftGazePointOnDisplayNormalizedY",
-                    "RightEyePositionFromEyeTrackerMMX",
-                    "RightEyePositionFromEyeTrackerMMY",
-                    "RightEyePositionFromEyeTrackerMMZ",
-                    "RightEyePostitionInTrackBoxNormalizedX",
-                    "RightEyePostitionInTrackBoxNormalizedY",
-                    "RightEyePostitionInTrackBoxNormalizedZ",
-                    "RightGazePointFromEyeTrackerMMX",
-                    "RightGazePointFromEyeTrackerMMY",
-                    "RightGazePointFromEyeTrackerMMZ",
-                    "RightGazePointOnDisplayNormalizedX",
-                    "RightGazePointOnDisplayNormalizedY");
-                _writer.WriteLine(s);
-            }
-        }
-
-        private void LogLine(string label, string value)
-        {
-            _writer.WriteLine(String.Format("{0}: {1}", label, value));
-        }
-
-        private string MakeEyeLabel(string eyeName, string propertyName)
-        {
-            return String.Format("{0}: {1}", eyeName, propertyName);
-        }
-
-        public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
-        {
-            // Unix timestamp is seconds past epoch
-            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            dtDateTime = dtDateTime.AddTicks((long)unixTimeStamp * 10).ToLocalTime();
-            return dtDateTime;
+            return gazeData.Timestamp - _startTime.Value;
         }
     }
 }
